@@ -9,13 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/rnb")
 public class HealthController {
 
-   /*"/hello")
-    public ResponseEntity<String> greeting() {
-        ResponseEntity<String> response = ResponseEntity.ok("Hello World");
-
-        return response;
-    }*/
-
     @GetMapping("/hello")
     public String greeting() {
         return "Hello user ";

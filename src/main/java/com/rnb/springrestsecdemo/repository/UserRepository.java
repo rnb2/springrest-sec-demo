@@ -2,7 +2,6 @@ package com.rnb.springrestsecdemo.repository;
 
 import com.rnb.springrestsecdemo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 @Repository
