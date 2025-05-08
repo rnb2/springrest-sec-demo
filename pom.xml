@@ -81,4 +81,12 @@
 		</plugins>
 	</build>
 
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub RNB Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/rnb2/springrest-sec-demo</url>
+		</repository>
+	</distributionManagement>
+
 </project>
