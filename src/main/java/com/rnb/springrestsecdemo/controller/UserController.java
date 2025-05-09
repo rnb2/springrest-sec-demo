@@ -3,6 +3,10 @@ package com.rnb.springrestsecdemo.controller;
 import com.rnb.springrestsecdemo.model.Role;
 import com.rnb.springrestsecdemo.model.User;
 import com.rnb.springrestsecdemo.service.UserService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,8 +42,11 @@ public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    private final AuthenticationManager authenticationManager;
+
+    public UserController(UserService userService, AuthenticationManager authenticationManager) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/register")
@@ -56,4 +63,20 @@ public class UserController {
         password!123
         $2a$10$CsCM0IOgz5aH5lOKlHC9CuJ2xjLEfM6t0tTfKk6h1iI5h.tNjBXwK
      */
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
+        //Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        //SecurityContextHolder.getContext().setAuthentication(authenticate);
+
+        if(authenticate.isAuthenticated()) {
+            System.out.println("authenticate.getName(): " + authenticate.getName());
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            return "Success";
+
+        }else {
+            return "Login failure";
+        }
+    }
 }

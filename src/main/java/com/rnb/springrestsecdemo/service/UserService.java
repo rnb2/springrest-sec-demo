@@ -15,8 +15,11 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        User userToAdd = new User();
         String encode = encoder.encode(user.getPassword());
-        user.setPassword(encode);
-        return userRepository.save(user);
+        userToAdd.setPassword(encode);
+        userToAdd.setUsername(user.getUsername());
+
+        return userRepository.save(userToAdd);
     }
 }
