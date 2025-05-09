@@ -2,6 +2,7 @@ package com.rnb.springrestsecdemo.controller;
 
 import com.rnb.springrestsecdemo.model.Role;
 import com.rnb.springrestsecdemo.model.User;
+import com.rnb.springrestsecdemo.service.JwtService;
 import com.rnb.springrestsecdemo.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,12 +42,13 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    public UserController(UserService userService, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, AuthenticationManager authenticationManager, JwtService jwtService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -66,14 +68,12 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestBody User user) {
-        //Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        //SecurityContextHolder.getContext().setAuthentication(authenticate);
 
         if(authenticate.isAuthenticated()) {
-            System.out.println("authenticate.getName(): " + authenticate.getName());
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
-            return "Success";
+            //return "Success";
+            return jwtService.generateToken(user.getUsername());
 
         }else {
             return "Login failure";
